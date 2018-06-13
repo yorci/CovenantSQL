@@ -21,6 +21,10 @@ import (
 
 	"time"
 
+	"reflect"
+
+	"bytes"
+
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/thunderdb/ThunderDB/crypto/hash"
 )
@@ -50,5 +54,44 @@ func TestNode_InitNodeCryptoInfo(t *testing.T) {
 		node = NodeID("#0000000011a34cb8142780f692a4097d883aa2ac8a534a070a134f11bcca573")
 		So(node.Difficulty(), ShouldEqual, -1)
 		So((*NodeID)(nil).Difficulty(), ShouldEqual, -1)
+	})
+}
+
+func TestNode_Marshal(t *testing.T) {
+	Convey("marshal unmarshal", t, func() {
+		NewNodeIDDifficultyTimeout = 100 * time.Millisecond
+
+		node := NewNode()
+		node.InitNodeCryptoInfo()
+
+		nBytes, err := node.Marshal()
+		So(err, ShouldBeNil)
+		So(nBytes, ShouldNotBeNil)
+
+		node2, err := UnmarshalNode(nBytes)
+		So(err, ShouldBeNil)
+		So(reflect.DeepEqual(node2, node), ShouldBeTrue)
+
+		nBytes = bytes.Replace(nBytes, node.PublicKey.SerializeCompressed(), bytes.Repeat([]byte{0xff}, 32), 5)
+		node2, err = UnmarshalNode(nBytes)
+		So(err, ShouldNotBeNil)
+		So(node2, ShouldBeNil)
+
+		nBytes, err = (*Node)(nil).Marshal()
+		So(err, ShouldNotBeNil)
+		So(nBytes, ShouldBeNil)
+
+		node.PublicKey = nil
+		nBytes, err = node.Marshal()
+		So(err, ShouldNotBeNil)
+		So(nBytes, ShouldBeNil)
+
+		node3, err := UnmarshalNode(nil)
+		So(err, ShouldNotBeNil)
+		So(node3, ShouldBeNil)
+
+		node4, err := UnmarshalNode([]byte("aaaaaaa"))
+		So(err, ShouldNotBeNil)
+		So(node4, ShouldBeNil)
 	})
 }
