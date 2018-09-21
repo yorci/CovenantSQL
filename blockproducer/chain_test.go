@@ -74,11 +74,6 @@ func TestChain(t *testing.T) {
 		cfg := NewConfig(genesis, fl.Name(), rpcServer, peers, peers.Servers[0].ID, testPeriod, testTick)
 		chain, err := NewChain(cfg)
 		So(err, ShouldBeNil)
-		ao, ok := chain.ms.readonly.accounts[testAddress1]
-		So(ok, ShouldBeTrue)
-		So(ao, ShouldNotBeNil)
-		So(chain.ms.pool.entries[testAddress1].transacions, ShouldBeEmpty)
-		So(chain.ms.pool.entries[testAddress1].baseNonce, ShouldEqual, 0)
 
 		// Hack for signle instance test
 		chain.rt.bpNum = 5

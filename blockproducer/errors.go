@@ -72,6 +72,4 @@ var (
 	// ErrUnknownTransactionType indicates that a transaction has a unknown type and cannot be
 	// further processed.
 	ErrUnknownTransactionType = errors.New("unknown transaction type")
-	// ErrTransactionMismatch indicates that transactions to be committed mismatch the pool.
-	ErrTransactionMismatch = errors.New("transaction mismatch")
 )
