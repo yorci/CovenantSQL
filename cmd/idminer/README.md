@@ -22,20 +22,20 @@ $ idminer -tool keygen
 Enter master key(press Enter for default: ""): 
 ⏎
 Private key file: private.key
-Public key's hex: 03bc9e90e3301a2f5ae52bfa1f9e033cde81b6b6e7188b11831562bf5847bff4c0
+Public key's hex: 03bb49a9d4cc6fbfddb520924dd0603c74c31f15fb31641e34bc03a8fe3e0d3f5b
 ```
 
 The private.key is your encrypted private key file, and the pubkey hex is your public key's hex.
 
-### Generate Wallet Address from existing Key
+### Generate Wallet Address from Existing Key
 
 ```
 $ idminer -tool addrgen -private private.key
 Enter master key(default: ""):
 ⏎
-wallet address: 4jXvNvPHKNPU8Sncz5u5F5WSGcgXmzC1g8RuAXTCJzLsbF9Dsf9
-$ idminer -tool addrgen -public 02f2707c1c6955a9019cd9d02ade37b931fbfa286a1163dfc1de965ec01a5c4ff8
-wallet address: 4jXvNvPHKNPU8Sncz5u5F5WSGcgXmzC1g8RuAXTCJzLsbF9Dsf9
+wallet address: 4kcD5jFFqLMmiG31QTFWbYkKHFhVgpSTejeZkQHjztaMVcnk2CE
+$ idminer -tool addrgen -public 03bb49a9d4cc6fbfddb520924dd0603c74c31f15fb31641e34bc03a8fe3e0d3f5b
+wallet address: 4kcD5jFFqLMmiG31QTFWbYkKHFhVgpSTejeZkQHjztaMVcnk2CE
 ```
 
 You can generate your *wallet* address for test net according to your private key or public key.

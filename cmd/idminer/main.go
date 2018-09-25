@@ -228,7 +228,7 @@ func runMiner() {
 
 func runKeygen() *asymmetric.PublicKey {
 	if _, err := os.Stat(privateKeyFile); err == nil {
-		fmt.Printf("%s exists, remove it before generate new one", privateKeyFile)
+		fmt.Printf("%s exists, remove it before generate new one\n", privateKeyFile)
 		os.Exit(1)
 	}
 
@@ -254,7 +254,7 @@ func runKeygen() *asymmetric.PublicKey {
 func runKeytool() {
 	masterKey, err := readMasterKey()
 	if err != nil {
-		fmt.Printf("read master key failed: %v", err)
+		fmt.Printf("read master key failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -268,7 +268,7 @@ func runKeytool() {
 
 func runRPC() {
 	if err := client.Init(configFile, []byte("")); err != nil {
-		fmt.Printf("init rpc client failed: %v", err)
+		fmt.Printf("init rpc client failed: %v\n", err)
 		os.Exit(1)
 		return
 	}
@@ -277,21 +277,21 @@ func runRPC() {
 
 	// fill the req with request body
 	if err := json.Unmarshal([]byte(rpcReq), req); err != nil {
-		fmt.Printf("decode request body failed: %v", err)
+		fmt.Printf("decode request body failed: %v\n", err)
 		os.Exit(1)
 		return
 	}
 
 	if err := rpc.NewCaller().CallNode(proto.NodeID(rpcEndpoint), rpcName, req, resp); err != nil {
 		// send request failed
-		fmt.Printf("call rpc failed: %v", err)
+		fmt.Printf("call rpc failed: %v\n", err)
 		os.Exit(1)
 		return
 	}
 
 	// print the response
 	if resBytes, err := json.MarshalIndent(resp, "", "  "); err != nil {
-		fmt.Printf("marshal response failed: %v", err)
+		fmt.Printf("marshal response failed: %v\n", err)
 		os.Exit(1)
 	} else {
 		fmt.Println(string(resBytes))
@@ -303,7 +303,7 @@ func resolveRPCEntities() (req interface{}, resp interface{}) {
 
 	if len(rpcParts) != 2 {
 		// error rpc name
-		fmt.Printf("%v is not a valid rpc name", rpcName)
+		fmt.Printf("%v is not a valid rpc name\n", rpcName)
 		os.Exit(1)
 		return
 	}
@@ -321,7 +321,7 @@ func resolveRPCEntities() (req interface{}, resp interface{}) {
 			if method.Name == rpcParts[1] {
 				// name matched
 				if mtype.PkgPath() != "" || mtype.NumIn() != 3 || mtype.NumOut() != 1 {
-					fmt.Printf("%v is not a valid rpc endpoint method", rpcName)
+					fmt.Printf("%v is not a valid rpc endpoint method\n", rpcName)
 					os.Exit(1)
 					return
 				}
@@ -344,7 +344,7 @@ func resolveRPCEntities() (req interface{}, resp interface{}) {
 	}
 
 	// not found
-	fmt.Printf("rpc method %v not found", rpcName)
+	fmt.Printf("rpc method %v not found\n", rpcName)
 	os.Exit(1)
 
 	return
@@ -365,7 +365,7 @@ func runNonce() {
 	} else if privateKeyFile != "" {
 		masterKey, err := readMasterKey()
 		if err != nil {
-			fmt.Printf("read master key failed: %v", err)
+			fmt.Printf("read master key failed: %v\n", err)
 			os.Exit(1)
 		}
 		privateKey, err := kms.LoadPrivateKey(privateKeyFile, []byte(masterKey))
@@ -544,16 +544,17 @@ func runAddrgen() {
 	} else if privateKeyFile != "" {
 		masterKey, err := readMasterKey()
 		if err != nil {
-			fmt.Printf("read master key failed: %v", err)
+			fmt.Printf("read master key failed: %v\n", err)
 			os.Exit(1)
 		}
 		privateKey, err := kms.LoadPrivateKey(privateKeyFile, []byte(masterKey))
 		if err != nil {
-			log.Fatalf("load private key file fail: %v", err)
+			fmt.Printf("load private key file fail: %v\n", err)
+			os.Exit(1)
 		}
 		publicKey = privateKey.PubKey()
 	} else {
-		fmt.Printf("privateKey path or publicKey hex is required for addrgen")
+		fmt.Printf("privateKey path or publicKey hex is required for addrgen\n")
 		os.Exit(1)
 	}
 
